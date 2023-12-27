@@ -44,6 +44,16 @@ import (
 	"github.com/valyala/fasthttp"
 )
 
+type VersionResponse struct {
+	Version string `json:"version"`
+}
+
+func getVersionHandler() func(ctx *fasthttp.RequestCtx) {
+	return func(ctx *fasthttp.RequestCtx) {
+		alertsHandler.ProcessVersionInfo(ctx)
+	}
+}
+
 func getHealthHandler() func(ctx *fasthttp.RequestCtx) {
 	return func(ctx *fasthttp.RequestCtx) {
 		health.ProcessGetHealth(ctx)
@@ -387,6 +397,12 @@ func createAlertHandler() func(ctx *fasthttp.RequestCtx) {
 	}
 }
 
+func silenceAlertHandler() func(ctx *fasthttp.RequestCtx) {
+	return func(ctx *fasthttp.RequestCtx) {
+		alertsHandler.ProcessSilenceAlertRequest(ctx)
+	}
+}
+
 func getAlertHandler() func(ctx *fasthttp.RequestCtx) {
 	return func(ctx *fasthttp.RequestCtx) {
 		alertsHandler.ProcessGetAlertRequest(ctx)
@@ -492,5 +508,17 @@ func liveTailHandler(myid uint64) func(ctx *fasthttp.RequestCtx) {
 func searchTracesHandler() func(ctx *fasthttp.RequestCtx) {
 	return func(ctx *fasthttp.RequestCtx) {
 		tracinghandler.ProcessSearchTracesRequest(ctx, 0)
+	}
+}
+
+func getDependencyGraphHandler() func(ctx *fasthttp.RequestCtx) {
+	return func(ctx *fasthttp.RequestCtx) {
+		tracinghandler.ProcessDependencyRequest(ctx, 0)
+	}
+}
+
+func ganttChartHandler() func(ctx *fasthttp.RequestCtx) {
+	return func(ctx *fasthttp.RequestCtx) {
+		tracinghandler.ProcessGanttChartRequest(ctx, 0)
 	}
 }

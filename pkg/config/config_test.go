@@ -67,6 +67,7 @@ func Test_ExtractConfigData(t *testing.T) {
  queryHostname: "abc:123"
  pqsEnabled: bad string
  analyticsEnabled: false
+ agileAggsEnabled: false
  safeMode: true
  log:
    logPrefix: "./pkg/ingestor/httpserver/"
@@ -75,7 +76,7 @@ func Test_ExtractConfigData(t *testing.T) {
 			Configuration{
 				IngestPort:                 9090,
 				IngestUrl:                  "http://localhost:9090",
-				QueryPort:                  80,
+				QueryPort:                  5122,
 				EventTypeKeywords:          []string{"utm_content"},
 				QueryNode:                  "true",
 				IngestNode:                 "true",
@@ -99,6 +100,8 @@ func Test_ExtractConfigData(t *testing.T) {
 				pqsEnabledConverted:        true,
 				AnalyticsEnabled:           "false",
 				analyticsEnabledConverted:  false,
+				AgileAggsEnabled:           "false",
+				AgileAggsEnabledConverted:  false,
 				SafeServerStart:            true,
 				Log:                        LogConfig{"./pkg/ingestor/httpserver/", 100, false},
 			},
@@ -132,6 +135,7 @@ func Test_ExtractConfigData(t *testing.T) {
  MaxParallelS3IngestBuffers: 10
  pqsEnabled: F
  analyticsEnabled: bad string
+ AgileAggsEnabled: bad string
  log:
    logPrefix: "./pkg/ingestor/httpserver/"
    logFileRotationSizeMB: 1000
@@ -165,6 +169,8 @@ func Test_ExtractConfigData(t *testing.T) {
 				pqsEnabledConverted:        false,
 				AnalyticsEnabled:           "true",
 				analyticsEnabledConverted:  true,
+				AgileAggsEnabled:           "true",
+				AgileAggsEnabledConverted:  true,
 				SafeServerStart:            false,
 				Log:                        LogConfig{"./pkg/ingestor/httpserver/", 1000, true},
 			},
@@ -200,6 +206,8 @@ invalid input, we should error out
 				QueryHostname:              "",
 				AnalyticsEnabled:           "true",
 				analyticsEnabledConverted:  true,
+				AgileAggsEnabled:           "true",
+				AgileAggsEnabledConverted:  true,
 				Log:                        LogConfig{"", 100, false},
 			},
 		},
@@ -209,7 +217,7 @@ a: b
 `),
 			Configuration{
 				IngestPort:                 8081,
-				QueryPort:                  80,
+				QueryPort:                  5122,
 				IngestUrl:                  "http://localhost:8081",
 				EventTypeKeywords:          []string{"eventType"},
 				QueryNode:                  "true",
@@ -235,6 +243,8 @@ a: b
 				SafeServerStart:            false,
 				AnalyticsEnabled:           "true",
 				analyticsEnabledConverted:  true,
+				AgileAggsEnabled:           "true",
+				AgileAggsEnabledConverted:  true,
 				Log:                        LogConfig{"", 100, false},
 			},
 		},

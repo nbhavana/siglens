@@ -2,6 +2,7 @@
     --black: #000;
     --white: #fff;
     --error: #f00;
+    --error-trace: #E93125;
     --color-danger: #d1242f;
     --fw-400: 400;
     --fw-500: 500;
@@ -18,6 +19,7 @@
 
     --shadow-1: #6F6B7B29;
     --shadow-2: #00000029;
+    --trace-error-shadow:#E9312526;
 
     /* Dark Theme - default */
     --black-1: #160F29;
@@ -255,7 +257,7 @@
 
     --top-bar-bg-color-regular: var(--white-0);
 
-    --search-bar-bg: var(--white-2);
+    --search-bar-bg: var(--white-1);
     --search-bar-text-color-regular-or-hover: var(--white-8);
     --search-bar-text-color-active: var(--white-5);
 
@@ -484,7 +486,8 @@ body {
 .icon-metrics,
 .icon-alerts,
 .icon-minion,
-.icon-live{
+.icon-live,
+.icon-traces{
     min-height: 42px;
     min-width: 63px;
     background-origin: content-box;
@@ -594,6 +597,12 @@ body {
     width: 24px;
 }
 
+.icon-traces {
+    background-image: url("../assets/tracing-icon-inactive.svg");
+    height: 24px;
+    width: 24px;
+}
+
 .icon-search:hover,
 .menu.nav-search.active .icon-search {
     background-image: url("../assets/search-icon-active.svg");
@@ -662,6 +671,13 @@ body {
     height: 24px;
     width: 24px;
 }
+
+.icon-traces:hover,
+.menu.nav-traces.active .icon-traces {
+    background-image: url("../assets/tracing-icon-active.svg");
+    height: 24px;
+    width: 24px;
+}
 #filter-container {
     display: grid;
     grid-template-columns: 2fr auto auto auto auto;
@@ -704,24 +720,25 @@ body {
 #cancel-loading.active {
     background: var(--btn-hover-or-click-bg-color);
 }
-
+#alert-btn,
 #index-btn,
 #query-language-btn,
-#filter-input,
 #date-picker-btn,
 #cancel-loading,
 #live-tail-btn,
 #create-db-btn,
-#run-metrics-query-btn,
 #logout-btn,
 #search-query-btn,
 #test-data-btn{
     margin: 0;
-    padding: 15px 12px;
+    text-decoration: none;
+    height: 40px;
+}
+.run-metrics-query-btn{
+    margin: 0;
     text-decoration: none;
     border: none;
     height: 40px;
-    line-height: 14px;
 }
 #query-language-btn {
     width: 108px;
@@ -732,10 +749,10 @@ body {
 }
 
 
-#avail-fields-btn {
-    height: 44px;
+.avail-fields-btn {
+    height: 40px;
 }
-
+#alert-btn:hover,
 #index-btn:hover,
 #query-language-btn:hover,
 #date-picker-btn:hover,
@@ -744,6 +761,7 @@ body {
 }
 
 #avail-fields-btn:focus,
+#alert-btn.active,
 #index-btn.active,
 #query-language-btn.active,
 #date-picker-btn.active,
@@ -762,6 +780,7 @@ body {
 }
 
 #query-language-btn.active .dropdown-arrow.orange, 
+#alert-btn.active .dropdown-arrow.orange,
 #index-btn.active .dropdown-arrow.orange,
 #date-picker-btn.active .dropdown-arrow.orange,
 #avail-fields-btn.active .dropdown-arrow.orange,
@@ -774,7 +793,9 @@ body {
 #available-indexes {
     width: 300px;
 }
-
+#associated-alerts {
+    width: 300px;
+}
 #app-footer {
     position: fixed;
     bottom: 0;
@@ -836,7 +857,6 @@ body {
 
 input.form-control {
     background: var(--hits-summary-bg-regular) !important;
-    border: none;
     color: var(--search-bar-text-color-regular-or-hover);
     font-size: 1rem;
     border-radius: 5px;
@@ -949,8 +969,11 @@ progress.hidden {
 }
 
 #log-view {
-    width: 124px;
-    height: 44px;
+    width: 120px;
+    height: 40px;
+    background-color: var(--drop-down-btn-bg-regular);
+    border-radius: 5px;
+    border: 1px solid var(--border-btn-color);
 }
 
 .single-line-icon,
@@ -1001,22 +1024,24 @@ progress.hidden {
     height: 16px;
     width: 16px;
 }
-
+.table-view-icon,
+.multi-line-icon,
+.single-line-icon {
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
 #log-opt-single-btn,
 #log-opt-multi-btn,
 #log-opt-table-btn {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     padding: 0 9px;
-
     border-radius: 4px !important;
 }
-
 #log-opt-single-btn {
     margin: 4px;
 }
-
 #log-opt-multi-btn {
     margin: 4px 4px 4px 0;
 }
@@ -1208,7 +1233,11 @@ progress.hidden {
     border-radius: 3px;
 }
 
-.ui-widget-content .ui-state-highlight,
+.ui-widget-content .ui-state-highlight{
+    border: 1px solid var(--error);
+    background: var(--accent-color);
+    color: var(--white-0);
+}
 .ui-widget-header .ui-state-highlight {
     border: 1px solid var(--error);
     background: var(--accent-color);
@@ -1580,6 +1609,13 @@ progress.hidden {
     overflow: scroll;
     border: 1px solid var(--timepicker-border-color);
 }
+#associated-alerts {
+    width: 265px;
+    max-height: 209px;
+    background: var(--index-drop-down-box-bg-color);
+    overflow: scroll;
+    border: 1px solid var(--timepicker-border-color);
+}
 #save-query-options,
 #query-language-options {
     width: 130px;
@@ -1589,7 +1625,7 @@ progress.hidden {
     border: 1px solid var(--timepicker-border-color);
 }
 
-.index-dropdown-item, .query-language-option ,.panEdit-query-language-option {
+.index-dropdown-item,.alert-dropdown-item, .query-language-option ,.panEdit-query-language-option {
     width: 241px;
     background: var(--index-drop-down-item-inactive-bg-color);
     color: var(--index-drop-down-item-inactive-text-color);
@@ -1611,12 +1647,12 @@ progress.hidden {
     margin-top: 10px;
 }
 
-.index-dropdown-item:hover,.panEdit-query-language-option:hover, .query-language-option:hover{
+.index-dropdown-item:hover,.alert-dropdown-item:hover,.panEdit-query-language-option:hover, .query-language-option:hover{
     background: var(--index-drop-down-item-hover-bg-color);
     color: var(--index-drop-down-item-hover-text-color);
 }
 
-.index-dropdown-item.active,.panEdit-query-language-option.active, .query-language-option.active{
+.index-dropdown-item.active,.alert-dropdown-item.active,.panEdit-query-language-option.active, .query-language-option.active{
     background: var(--index-drop-down-item-active-bg-color);
     color: var(--index-drop-down-item-active-text-color);
 }
@@ -1628,9 +1664,18 @@ progress.hidden {
     top: 9px;
     right: 5px;
 }
-
+.alert-dropdown-item img {
+    display: none;
+    float: right;
+    position: relative;
+    top: 9px;
+    right: 5px;
+}
 
 .index-dropdown-item.active img {
+    display: inline;
+}
+.alert-dropdown-item.active img {
     display: inline;
 }
 
@@ -1661,8 +1706,7 @@ progress.hidden {
     margin: 0;
     padding: 15px 12px;
     text-decoration: none;
-    border: none;
-    height: 44px !important;
+    height: 40px;
     line-height: 14px;
 }
 .sq-magnigying-glass {
@@ -1801,6 +1845,15 @@ progress.hidden {
     background-image: url(../assets/dashboard-duplicate-icon.svg);
     height: 22px;
     width: 22px;
+    cursor: pointer;
+    background-color: transparent;
+    border-width: 0;
+    margin-left: 15px;
+}
+#favbutton{
+    background-image: url(../assets/star-outline.svg);
+    height: 16px;
+    width: 16px;
     cursor: pointer;
     background-color: transparent;
     border-width: 0;
@@ -2133,9 +2186,9 @@ div#download-info {
 }
 
 .validateTips.active {
-    height: 15px;
-    line-height: 12px;
-    font-size: 10px;
+    height: 1em;
+    line-height: 1em;
+    font-size: 0.8em;
     border:none;
     margin:0 0 5px 0;
     display: block;
@@ -2236,6 +2289,10 @@ input[type="submit" i] {
 
 #date-picker-btn {
     cursor: pointer;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border: 1px solid var(--border-btn-color);
 }
  
 .dropdown-menu.daterangepicker.show{
@@ -2726,18 +2783,30 @@ input[type="date"]::-webkit-calendar-picker-indicator , input[type="time"]::-web
     background: var(--component-bg-color-hover);
 }
 
-#cancel-dbbtn:focus, #delete-dbbtn:focus, #cancel-del-org-btn:focus {
+#cancel-dbbtn:focus,#error-ok-btn:focus, #delete-dbbtn:focus, #cancel-del-org-btn:focus {
     background: var(--btn-regular-bg-color);
 }
 
-#save-dbbtn, #cancel-db-prompt, .save-btn,#cancel-btn-panel {
+#save-dbbtn,#error-ok-btn, #cancel-db-prompt, .save-btn,#cancel-btn-panel {
     background: var(--btn-regular-bg-color) !important;
 }
 
 #cancel-dbbtn {
     margin: 0 !important;
 }
-
+#error-ok-btn {
+float: right;
+}
+#error-ok-btn {
+    width: 150px !important;
+    height: 45px !important;
+    border-radius: 5px;
+    border: none;
+    margin-left: auto;
+    margin-right: 14px !important;
+    color: var(--component-text-color);
+    margin-top: 15px;
+}
 #delete-db-prompt {
     display: none;
 }
@@ -2856,7 +2925,7 @@ input[type="date"]::-webkit-calendar-picker-indicator , input[type="time"]::-web
 .save-btn {
     text-decoration: none;
     border: none;
-    height: 44px;
+    height: 40px;
     line-height: 14px;
     display: flex;
     background: var(--btn-regular-bg-color);
@@ -3058,7 +3127,21 @@ input[type="date"]::-webkit-calendar-picker-indicator , input[type="time"]::-web
 
 .search-db-input,.metrics-input{
     padding: 15px 12px;
-    height: 44px;
+    height: 40px;
+}
+
+.dbSet-textareaContainer .copy{
+    background-image: url(../assets/copy-icon.svg);
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: calc(20% + 20px);
+    top: 20px;
+}
+
+[data-theme='dark'] .dbSet-textareaContainer .copy{
+    background-image: url(../assets/copy-icon-dark-mode.svg);
 }
 
 /* dashboard Grid*/
@@ -3192,7 +3275,7 @@ input[type="date"]::-webkit-calendar-picker-indicator , input[type="time"]::-web
 #metrics-graph-container,#metrics-table-container{
     height: 80vh;
     border-radius: 5px;
-    margin: 0px 27px 59px 22px;
+    margin: 0px 27px 0px 22px;
     background: var(--search-bar-bg);
 }
 
@@ -3201,7 +3284,7 @@ input[type="date"]::-webkit-calendar-picker-indicator , input[type="time"]::-web
 }
 
 .metrics-table-btn,.metrics-graph-btn{
-    height: 44px;
+    height: 40px;
     margin-right: 10px;
     width: 70px;
 }
@@ -4010,7 +4093,7 @@ color: #C8C7CC;
 }
 
 .myOrg #test-data-container .role-inner-dropdown{
-    height: 44px;
+    height: 40px;
 }
 
 /*Alerting Page*/
@@ -4168,14 +4251,13 @@ color: #C8C7CC;
     margin-bottom: 20px;
 }
 
-#info-evaluate-for{
-    top: 10px;
-    right: 425px;
+#label-evaluate-every , #for-span{
+    position: relative;
 }
 
-#info-evaluate-every{
-    top: 10px;
-    right: 610px;
+#info-evaluate-every,#info-evaluate-for{
+    top: 4px;
+    right: -30px;
 }
 
 #alert-condition,#contact-types,#contact-points-dropdown,#alert-data-source,
@@ -4510,6 +4592,7 @@ color: #C8C7CC;
     font-weight: var(--fw-400);
     font-family: "DINpro", Arial, sans-serif;
     border-radius: 4px;
+    min-height: 36px; /* Min height for any dropdown option including empty */
 }
 
 #dashboard-options .dashboard:hover{
@@ -4748,4 +4831,18 @@ color: #C8C7CC;
     -webkit-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 }
-
+.avail-fields-btn,
+.query-language-btn,
+.index-btn,
+.filter-input,
+.metrics-table-btn,
+.metrics-graph-container,
+#metrics-table-container,
+input.form-control {
+    border: 1px solid var(--border-btn-color);
+}
+.filter-input {
+    margin: 0;
+    text-decoration: none;
+    height: 40px;
+}

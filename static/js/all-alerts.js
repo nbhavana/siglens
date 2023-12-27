@@ -54,7 +54,6 @@ function getAllAlerts(){
         displayAllAlerts(res.alerts);
     })
 }
-
 class btnRenderer {
 	init(params) {
         this.eGui = document.createElement('span');
@@ -94,7 +93,11 @@ class btnRenderer {
 
         function showPrompt(event) {
             event.stopPropagation();
+            const alertRuleName = params.data.alertName; 
+            const confirmationMessage = `Are you sure you want to delete the "<strong>${alertRuleName}</strong>" alert?`;
+
 			$('.popupOverlay, .popupContent').addClass('active');
+            $('#delete-alert-name').html(confirmationMessage);
 
             $('#cancel-btn, .popupOverlay, #delete-btn').click(function () {
                 $('.popupOverlay, .popupContent').removeClass('active');
